@@ -1,0 +1,35 @@
+{
+  "name": "roboticos",
+  "version": "1.0.0",
+  "description": "Personal Robotics OS — Autonomous Systems Control Layer",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder --win --x64",
+    "pack": "electron-builder --dir"
+  },
+  "build": {
+    "appId": "com.personal.roboticos",
+    "productName": "RoboticOS",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "serialport": "^12.0.0",
+    "ws": "^8.16.0",
+    "node-pty": "^1.0.0",
+    "chokidar": "^3.5.3",
+    "mathjs": "^12.0.0"
+  }
+}

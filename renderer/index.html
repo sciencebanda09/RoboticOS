@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RoboticOS</title>
+  <link rel="stylesheet" href="css/os.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     BOOT SCREEN
+═══════════════════════════════════════════════ -->
+<div id="boot-screen">
+  <canvas id="boot-canvas"></canvas>
+  <div class="boot-ui">
+    <div class="boot-hex">⬡</div>
+    <div class="boot-title">ROBOTIC<span class="accent">OS</span></div>
+    <div class="boot-sub">AUTONOMOUS SYSTEMS CONTROL LAYER v1.0</div>
+    <div class="boot-progress-track">
+      <div class="boot-progress-fill" id="boot-fill"></div>
+      <div class="boot-progress-glow" id="boot-glow"></div>
+    </div>
+    <div class="boot-status" id="boot-status">INITIALIZING KERNEL...</div>
+    <div class="boot-checks" id="boot-checks"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     DESKTOP
+═══════════════════════════════════════════════ -->
+<div id="desktop" class="hidden">
+
+  <!-- Custom title bar -->
+  <div id="title-bar">
+    <div id="title-bar-drag">
+      <span class="tb-logo">⬡ RoboticOS</span>
+    </div>
+    <div id="title-bar-controls">
+      <button class="tb-btn" onclick="roboOS.win.minimize()">─</button>
+      <button class="tb-btn" onclick="roboOS.win.maximize()">□</button>
+      <button class="tb-btn close" onclick="roboOS.win.close()">✕</button>
+    </div>
+  </div>
+
+  <!-- Desktop surface -->
+  <div id="desktop-surface">
+    <canvas id="wallpaper"></canvas>
+
+    <!-- ESTOP OVERLAY -->
+    <div id="estop-overlay" class="hidden">
+      <div class="estop-inner">
+        <div class="estop-icon">⛔</div>
+        <div class="estop-title">EMERGENCY STOP</div>
+        <div class="estop-sub" id="estop-reason">Triggered by operator</div>
+        <button class="estop-reset" onclick="RTOS.resetEStop()">RESET SYSTEM</button>
+      </div>
+    </div>
+
+    <!-- Desktop icons -->
+    <div id="desktop-icons">
+      <div class="desk-icon" onclick="OS.launchApp('dashboard')">
+        <div class="desk-icon-img">📡</div>
+        <div class="desk-icon-label">Mission Control</div>
+      </div>
+      <div class="desk-icon" onclick="OS.launchApp('sensors')">
+        <div class="desk-icon-img">🔬</div>
+        <div class="desk-icon-label">Sensor Hub</div>
+      </div>
+      <div class="desk-icon" onclick="OS.launchApp('actuators')">
+        <div class="desk-icon-img">⚙️</div>
+        <div class="desk-icon-label">Actuator Mgr</div>
+      </div>
+      <div class="desk-icon" onclick="OS.launchApp('tasks')">
+        <div class="desk-icon-img">🤖</div>
+        <div class="desk-icon-label">AI Task Allocator</div>
+      </div>
+      <div class="desk-icon" onclick="OS.launchApp('safety')">
+        <div class="desk-icon-img">🛡️</div>
+        <div class="desk-icon-label">Safety Kernel</div>
+      </div>
+      <div class="desk-icon" onclick="OS.launchApp('network')">
+        <div class="desk-icon-img">🌐</div>
+        <div class="desk-icon-label">Comm Bus</div>
+      </div>
+      <div class="desk-icon" onclick="OS.launchApp('terminal')">
+        <div class="desk-icon-img">⌨️</div>
+        <div class="desk-icon-label">Terminal</div>
+      </div>
+      <div class="desk-icon" onclick="OS.launchApp('logs')">
+        <div class="desk-icon-img">📋</div>
+        <div class="desk-icon-label">Mission Logs</div>
+      </div>
+      <div class="desk-icon" onclick="OS.launchApp('map')">
+        <div class="desk-icon-img">🗺️</div>
+        <div class="desk-icon-label">Navigation Map</div>
+      </div>
+      <div class="desk-icon" onclick="OS.launchApp('config')">
+        <div class="desk-icon-img">🔧</div>
+        <div class="desk-icon-label">Config Editor</div>
+      </div>
+    </div>
+
+    <!-- Window manager layer -->
+    <div id="wm-layer"></div>
+
+    <!-- Context menu -->
+    <div id="ctx-menu" class="hidden">
+      <div class="ctx-item" onclick="OS.launchApp('dashboard')">📡 Mission Control</div>
+      <div class="ctx-item" onclick="OS.launchApp('sensors')">🔬 Sensor Hub</div>
+      <div class="ctx-sep"></div>
+      <div class="ctx-item estop" onclick="RTOS.triggerEStop('Manual — Context Menu')">⛔ EMERGENCY STOP</div>
+      <div class="ctx-sep"></div>
+      <div class="ctx-item" onclick="OS.reloadDesktop()">↻ Reload OS</div>
+    </div>
+  </div>
+
+  <!-- ── Taskbar ─────────────────────────────── -->
+  <div id="taskbar">
+    <div id="taskbar-start" onclick="OS.toggleLauncher()">
+      <span>⬡</span> RTOS
+    </div>
+    <div id="taskbar-apps"></div>
+    <div id="taskbar-tray">
+      <div class="tray-item estop-btn" onclick="RTOS.triggerEStop('Taskbar E-Stop')" title="Emergency Stop">⛔ E-STOP</div>
+      <div class="tray-sep"></div>
+      <div class="tray-item" id="tray-soc" title="Battery">🔋 --%</div>
+      <div class="tray-item" id="tray-latency" title="Bus Latency">⚡ 0ms</div>
+      <div class="tray-sep"></div>
+      <div class="tray-item" id="tray-clock">00:00:00</div>
+    </div>
+  </div>
+
+  <!-- ── App Launcher ────────────────────────── -->
+  <div id="launcher" class="hidden">
+    <div id="launcher-inner">
+      <div id="launcher-search-row">
+        <input id="launcher-search" placeholder="Search subsystems..." autocomplete="off" oninput="OS.filterLauncher(this.value)"/>
+      </div>
+      <div id="launcher-grid"></div>
+    </div>
+  </div>
+
+  <!-- ── Notifications ───────────────────────── -->
+  <div id="notif-container"></div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════ -->
+<script src="js/core/kernel.js"></script>
+<script src="js/core/wm.js"></script>
+<script src="js/core/wallpaper.js"></script>
+<script src="js/core/rtos.js"></script>
+<script src="js/apps/dashboard.js"></script>
+<script src="js/apps/sensors.js"></script>
+<script src="js/apps/actuators.js"></script>
+<script src="js/apps/tasks.js"></script>
+<script src="js/apps/safety.js"></script>
+<script src="js/apps/network.js"></script>
+<script src="js/apps/terminal.js"></script>
+<script src="js/apps/logs.js"></script>
+<script src="js/apps/map.js"></script>
+<script src="js/apps/config.js"></script>
+<script src="js/core/os.js"></script>
+</body>
+</html>
