@@ -7,7 +7,7 @@ Built on Electron + Node.js. Designed for autonomous systems control.
 
 ---
 
-## ✨ Features
+## Features
 
 ### Core OS Layer
 | Component | What it does |
@@ -36,7 +36,7 @@ Built on Electron + Node.js. Designed for autonomous systems control.
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) v18 or newer
@@ -60,7 +60,7 @@ npm run dev
 
 ---
 
-## 📦 Build Standalone .exe
+##  Build Standalone .exe
 
 ```bash
 npm run build
@@ -70,7 +70,7 @@ The installer will be in `dist/`. No Node.js needed on target machine.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 roboticos/
@@ -156,7 +156,7 @@ RTOS.resetEStop();                        // Resume after E-STOP
 
 ---
 
-## 🔧 Adding Your Own App
+##  Adding Your Own App
 
 1. Create `renderer/js/apps/myapp.js`:
 ```js
@@ -203,7 +203,7 @@ port.on('data', (data) => {
 
 ---
 
-## 🗂 File Storage
+##  File Storage
 
 RoboticOS stores files at:
 ```
@@ -223,7 +223,7 @@ C:\Users\<you>\RoboticOS\
 
 ---
 
-## ⚡ Terminal Commands
+## Terminal Commands
 
 | Command | Description |
 |---------|-------------|
