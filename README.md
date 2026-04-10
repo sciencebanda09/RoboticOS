@@ -1,5 +1,7 @@
 # ⬡ RoboticOS — Personal Robotics OS
 
+<img width="1919" height="1006" alt="RoboticsOs" src="https://github.com/user-attachments/assets/276ff305-2034-4347-864d-29e3f4e657d4" />
+
 A fully personal **Robotics Operating System** that runs as a **regular Windows application**.
 No rooting, no admin rights, no kernel modifications required.
 
